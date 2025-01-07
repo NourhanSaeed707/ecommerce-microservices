@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/product
-    username: nourhan
+    username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -14,7 +14,7 @@ spring:
     enabled: true
     baseline-description: "init"
     baseline-version: 0
-    user: nourhan
+    user: postgres
     password: password
 
 server:

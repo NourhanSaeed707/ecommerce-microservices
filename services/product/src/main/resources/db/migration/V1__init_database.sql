@@ -1,7 +1,8 @@
-create table if not exists category(
+create table if not exists category
+(
      id integer not null primary key,
      description varchar(255),
-     name varchar(255),
+     name varchar(255)
 );
 
 create table if not exists product (
