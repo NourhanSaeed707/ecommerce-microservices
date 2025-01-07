@@ -1,10 +1,9 @@
 package com.example.product.product;
+import com.example.product.exceptions.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +19,26 @@ public class ProductService {
     public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> productPurchaseRequestList) {
        var productIds = productPurchaseRequestList.stream().map(ProductPurchaseRequest::getProductId).toList();
        var storedProducts = productRepository.findByIdInOrderById(productIds);
+       if (productIds.size() != storedProducts.size()) {
+           throw new ProductPurchaseException("One or more products does not exists");
+       }
+       var storedRequest = productPurchaseRequestList.stream().sorted(Comparator.comparing(ProductPurchaseRequest::getProductId)).toList();
+       var purchaseProducts = new ArrayList<ProductPurchaseResponse>();
+       for (int i = 0; i < storedRequest.size(); i++) {
+            var product = storedProducts.get(i);
+            var productRequest = storedRequest.get(i);
+            if(product.getAvailableQuantity() < productRequest.getQuantity()) {
+                throw new ProductPurchaseException("Insufficient stock quantity for product with id: " + productRequest.getProductId());
+            }
+            var newAvailableQuantity = product.getAvailableQuantity() - productRequest.getQuantity();
+            product.setAvailableQuantity(newAvailableQuantity);
+            productRepository.save(product);
+            purchaseProducts.add(mapper.toProductPurchaseResponse(product, productRequest.getQuantity()));
+        }
     }
 
     public ProductResponse findById(Integer productId) {
-        productRepository.findById(productId)
+        return productRepository.findById(productId)
                 .map(mapper::toProductResponse)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
     }
