@@ -18,7 +18,8 @@ public class ProductService {
     }
 
     public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> productPurchaseRequestList) {
-
+       var productIds = productPurchaseRequestList.stream().map(ProductPurchaseRequest::getProductId).toList();
+       var storedProducts = productRepository.findByIdInOrderById(productIds);
     }
 
     public ProductResponse findById(Integer productId) {
