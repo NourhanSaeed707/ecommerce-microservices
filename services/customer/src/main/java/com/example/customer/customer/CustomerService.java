@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -38,5 +41,21 @@ public class CustomerService {
         if(customerRequest.getAddress() != null ) {
             customer.setAddress(customerRequest.getAddress());
         }
+    }
+
+    public List<CustomerResponse> findAllCustomers() {
+        return customerRepository.findAll().stream().map(mapper::fromCustomer).collect(Collectors.toList());
+    }
+
+    public Boolean existsById(String customerId) {
+        return customerRepository.findById(customerId).isPresent();
+    }
+
+    public CustomerResponse findById(String customerId) {
+        return customerRepository.findById(customerId).map(mapper::fromCustomer).orElseThrow(() -> new CustomerNotFoundException("No customer founded"));
+    }
+
+    public void deleteCustomer(String customerId) {
+        customerRepository.deleteById(customerId);
     }
 }
