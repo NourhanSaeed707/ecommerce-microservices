@@ -1,5 +1,4 @@
-package com.example.customer.customer.exception;
-
+package com.example.customer.exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

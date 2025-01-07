@@ -1,10 +1,8 @@
 package com.example.customer.customer;
-import ch.qos.logback.core.util.StringUtil;
-import com.example.customer.customer.exception.CustomerNotFoundException;
+import com.example.customer.exception.CustomerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
