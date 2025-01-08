@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class ProductService {
             productRepository.save(product);
             purchaseProducts.add(mapper.toProductPurchaseResponse(product, productRequest.getQuantity()));
         }
+       return purchaseProducts;
     }
 
     public ProductResponse findById(Integer productId) {
