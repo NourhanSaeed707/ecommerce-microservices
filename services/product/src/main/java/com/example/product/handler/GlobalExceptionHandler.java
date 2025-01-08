@@ -1,6 +1,4 @@
 package com.example.product.handler;
-
-import com.example.customer.exception.CustomerNotFoundException;
 import com.example.product.exceptions.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
